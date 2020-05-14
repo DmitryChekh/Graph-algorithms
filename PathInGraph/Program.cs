@@ -52,7 +52,7 @@ namespace PathInGraph
 
             PrintMatrix(graph);
 
-            graph.AlgorithmDixtra(v1, v7);
+            graph.AlgorithDijkstra(v1, v7);
 
             PrintWeight(graph);
             

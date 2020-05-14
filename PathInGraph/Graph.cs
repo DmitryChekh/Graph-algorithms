@@ -85,21 +85,18 @@ namespace PathInGraph
 
         // D[v] = min(D[v], D[w]+C[w, v]);
 
-        
-        public void AlgorithmDixtra(Vertex start, Vertex end)
+        public void AlgorithDijkstra(Vertex start, Vertex end)
         {
+            FlagAllVertex(start);
             List<Vertex> checkedVertex = new List<Vertex>();
             checkedVertex.Add(start);
-            FlagAllVertex(start);
-            for (int i = 0; i < Vertices.Count; i++)
+
+            for(int i = 0; i < Vertices.Count - 1;i++)
             {
                 Dictionary<Vertex, int> adjVertices = GetAdjacentVerticesWithLenght(checkedVertex[i]);
-                if (adjVertices.Count == 0)
-                {
-                    adjVertices = GetAdjacentVerticesWithLenght(start);
-                }
-
                 var closestVertex = adjVertices.Where(pair => pair.Value == adjVertices.Values.Min());
+
+
                 foreach (var item in adjVertices)
                 {
                     if (distanceToVertex[item.Key] == -1)
@@ -116,22 +113,82 @@ namespace PathInGraph
                         }
                     }
                 }
-                foreach (var item in closestVertex)
+
+                if (adjVertices.Count == 0)
                 {
-                    if (!checkedVertex.Contains(item.Key))
+                    try
                     {
-                        Console.WriteLine("Checking {0}. Closest {1}", checkedVertex[i], item.Key.Number);
-                        checkedVertex.Add(item.Key);
+                        var subset = distanceToVertex.Where(item => !checkedVertex.Contains(item.Key) &&
+                            item.Value > 0).OrderBy(item => distanceToVertex.Values).Select(item => item.Key).First();
+                        checkedVertex.Add(subset);
                     }
-                    else
+                    catch
                     {
-                        checkedVertex.Add(start);
+                        
+                    }
+
+                }
+                else
+                {
+                    foreach (var item in closestVertex)
+                    {
+                        if (!checkedVertex.Contains(item.Key))
+                        {
+                            Console.WriteLine("Checking {0}. Closest {1}", checkedVertex[i], item.Key.Number);
+                            checkedVertex.Add(item.Key);
+                        }
                     }
                 }
-
             }
             Console.WriteLine("{0}-{1} Short lenght - {2}", start.Number, end.Number, distanceToVertex[end]);
         }
+
+        //public void AlgorithmDixtra(Vertex start, Vertex end)
+        //{
+        //    List<Vertex> checkedVertex = new List<Vertex>();
+        //    checkedVertex.Add(start);
+        //    FlagAllVertex(start);
+        //    for (int i = 0; i < Vertices.Count; i++)
+        //    {
+        //        Dictionary<Vertex, int> adjVertices = GetAdjacentVerticesWithLenght(checkedVertex[i]);
+        //        if (adjVertices.Count == 0)
+        //        {
+        //            adjVertices = GetAdjacentVerticesWithLenght(start);
+        //        }
+
+        //        var closestVertex = adjVertices.Where(pair => pair.Value == adjVertices.Values.Min());
+        //        foreach (var item in adjVertices)
+        //        {
+        //            if (distanceToVertex[item.Key] == -1)
+        //            {
+        //                distanceToVertex[item.Key] = item.Value + distanceToVertex[checkedVertex[i]];
+        //                var test1 = distanceToVertex[item.Key];
+        //            }
+        //            else
+        //            {
+        //                var newDistance = item.Value + distanceToVertex[checkedVertex[i]];
+        //                if (distanceToVertex[item.Key] > newDistance || distanceToVertex[item.Key] == -1)
+        //                {
+        //                    distanceToVertex[item.Key] = newDistance;
+        //                }
+        //            }
+        //        }
+        //        foreach (var item in closestVertex)
+        //        {
+        //            if (!checkedVertex.Contains(item.Key))
+        //            {
+        //                Console.WriteLine("Checking {0}. Closest {1}", checkedVertex[i], item.Key.Number);
+        //                checkedVertex.Add(item.Key);
+        //            }
+        //            else
+        //            {
+        //                checkedVertex.Add(start);
+        //            }
+        //        }
+
+        //    }
+        //    Console.WriteLine("{0}-{1} Short lenght - {2}", start.Number, end.Number, distanceToVertex[end]);
+        //}
 
         public void FlagAllVertex(Vertex start)
         {
