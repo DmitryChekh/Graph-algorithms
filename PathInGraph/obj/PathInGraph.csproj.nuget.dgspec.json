@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "B:\\Programming\\sharp\\PathInGraph\\PathInGraph\\PathInGraph.csproj": {}
+    "b:\\Programming\\sharp\\PathInGraph\\PathInGraph\\PathInGraph.csproj": {}
   },
   "projects": {
-    "B:\\Programming\\sharp\\PathInGraph\\PathInGraph\\PathInGraph.csproj": {
+    "b:\\Programming\\sharp\\PathInGraph\\PathInGraph\\PathInGraph.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "B:\\Programming\\sharp\\PathInGraph\\PathInGraph\\PathInGraph.csproj",
+        "projectUniqueName": "b:\\Programming\\sharp\\PathInGraph\\PathInGraph\\PathInGraph.csproj",
         "projectName": "PathInGraph",
-        "projectPath": "B:\\Programming\\sharp\\PathInGraph\\PathInGraph\\PathInGraph.csproj",
+        "projectPath": "b:\\Programming\\sharp\\PathInGraph\\PathInGraph\\PathInGraph.csproj",
         "packagesPath": "C:\\Users\\Дмитрий\\.nuget\\packages\\",
-        "outputPath": "B:\\Programming\\sharp\\PathInGraph\\PathInGraph\\obj\\",
+        "outputPath": "b:\\Programming\\sharp\\PathInGraph\\PathInGraph\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Дмитрий\\AppData\\Roaming\\NuGet\\NuGet.Config",

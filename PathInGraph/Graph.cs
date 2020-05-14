@@ -8,6 +8,7 @@ namespace PathInGraph
     class Graph
     {
         public Dictionary<Vertex, int> distanceToVertex = new Dictionary<Vertex, int>();
+        List<Vertex> checkedVertex = new List<Vertex>();
         List<Edge> Edges = new List<Edge>();
         List<Vertex> Vertices = new List<Vertex>();
         public int VertexCount => Vertices.Count;
@@ -51,23 +52,6 @@ namespace PathInGraph
             return adjacentVerctices;
         }
 
-        public Dictionary<Vertex,int> GetAdjacentVerticesWithLenght(List<Vertex> vertex)
-        {
-            var result = new Dictionary<Vertex, int>();
-            foreach(var v in vertex)
-            {
-                foreach (var edge in Edges)
-                {
-                    if (edge.FromVertex == v)
-                    {
-                        if(!vertex.Contains(edge.ToVertex))
-                        result.Add(edge.ToVertex, edge.Weight);
-                    }
-                }
-            }
-            return result;
-        }
-
         public Dictionary<Vertex, int> GetAdjacentVerticesWithLenght(Vertex vertex)
         {
             var result = new Dictionary<Vertex, int>();
@@ -83,55 +67,73 @@ namespace PathInGraph
             return result;
         }
 
-        // D[v] = min(D[v], D[w]+C[w, v]);
 
-        
-        public void AlgorithmDixtra(Vertex start, Vertex end)
+        public void AlgorithDijkstra(Vertex start, Vertex end)
         {
-            List<Vertex> checkedVertex = new List<Vertex>();
-            checkedVertex.Add(start);
             FlagAllVertex(start);
-            for (int i = 0; i < Vertices.Count; i++)
+            checkedVertex.Add(start);
+
+            for(int i = 0; i < Vertices.Count; i++)
             {
-                Dictionary<Vertex, int> adjVertices = GetAdjacentVerticesWithLenght(checkedVertex[i]);
-                if (adjVertices.Count == 0)
-                {
-                    adjVertices = GetAdjacentVerticesWithLenght(start);
-                }
-
-                var closestVertex = adjVertices.Where(pair => pair.Value == adjVertices.Values.Min());
-                foreach (var item in adjVertices)
-                {
-                    if (distanceToVertex[item.Key] == -1)
-                    {
-                        distanceToVertex[item.Key] = item.Value + distanceToVertex[checkedVertex[i]];
-                        var test1 = distanceToVertex[item.Key];
-                    }
-                    else
-                    {
-                        var newDistance = item.Value + distanceToVertex[checkedVertex[i]];
-                        if (distanceToVertex[item.Key] > newDistance || distanceToVertex[item.Key] == -1)
-                        {
-                            distanceToVertex[item.Key] = newDistance;
-                        }
-                    }
-                }
-                foreach (var item in closestVertex)
-                {
-                    if (!checkedVertex.Contains(item.Key))
-                    {
-                        Console.WriteLine("Checking {0}. Closest {1}", checkedVertex[i], item.Key.Number);
-                        checkedVertex.Add(item.Key);
-                    }
-                    else
-                    {
-                        checkedVertex.Add(start);
-                    }
-                }
-
+                Vertex checkingVertex = checkedVertex[checkedVertex.Count - 1];
+                Dictionary<Vertex, int> adjVertices = GetAdjacentVerticesWithLenght(checkingVertex);
+                CheckingNeightbours(adjVertices, checkingVertex);
+                ChoosingNextVertex(adjVertices);
             }
-            Console.WriteLine("{0}-{1} Short lenght - {2}", start.Number, end.Number, distanceToVertex[end]);
+            checkedVertex.Clear();
         }
+
+        private void ChoosingNextVertex(Dictionary<Vertex, int> adjVertices)
+        {
+
+            if (adjVertices.Count == 0) 
+            {
+                GoToNonCheckedVertexWithShortestLenght();
+            }
+            else
+            {
+                GoToClosestVertex(adjVertices);
+            }
+        }
+
+        private void GoToNonCheckedVertexWithShortestLenght()
+        {
+            var subset = distanceToVertex.Where(item => !checkedVertex.Contains(item.Key) &&
+                item.Value > 0).OrderBy(item => distanceToVertex.Values).Select(item => item.Key).First();
+            checkedVertex.Add(subset);
+        }
+
+        private void GoToClosestVertex(Dictionary<Vertex, int> adjVertices)
+        {
+            var closestVertex = adjVertices.Where(pair => pair.Value == adjVertices.Values.Min());
+            foreach (var item in closestVertex)
+            {
+                if (!checkedVertex.Contains(item.Key))
+                {
+                    checkedVertex.Add(item.Key);
+                }
+            }
+        }
+
+        private void CheckingNeightbours(Dictionary<Vertex, int> adjVertices, Vertex checkingVertex)
+        {
+            foreach (var item in adjVertices)
+            {
+                if (distanceToVertex[item.Key] == -1) 
+                {
+                    distanceToVertex[item.Key] = item.Value + distanceToVertex[checkingVertex];
+                }
+                else
+                {
+                    var newDistance = item.Value + distanceToVertex[checkingVertex];
+                    if (distanceToVertex[item.Key] > newDistance)
+                    {
+                        distanceToVertex[item.Key] = newDistance;
+                    }
+                }
+            }
+        }
+
 
         public void FlagAllVertex(Vertex start)
         {
@@ -139,97 +141,7 @@ namespace PathInGraph
                 distanceToVertex.Add(item, -1);
             distanceToVertex[start] = 0;
         }
-        public void CheckStartNeighbours()
-        {
-
-        }
-
-        private void UpdateDistanceToVertex(Dictionary<Vertex,int> vertices)
-        {
-            foreach (var item in vertices)
-            {
-                distanceToVertex.Add(item.Key, item.Value);
-            }
-        }
-
-        //public void AlgorithmDixtra(Vertex from, Vertex to)
-        //{
-        //    Dictionary<Vertex, int> shortPathes = new Dictionary<Vertex, int>();
-        //    List<Vertex> usedVertices = new List<Vertex>();
-        //    var checkVertex = from;
-        //    for (int i = 0; i < Vertices.Count; i++)
-        //    {
-        //        Dictionary<Vertex, int> adjVertices = GetAdjacentVerticesWithLenght(usedVertices);
-        //        var closestVertex = adjVertices.Where(pair => pair.Value == adjVertices.Values.Min());
-
-        //        foreach(var kvp in closestVertex)
-        //        {
-        //            if (!shortPathes.ContainsKey(kvp.Key))
-        //            {
-        //                shortPathes.Add(kvp.Key, kvp.Value);
-        //            }
-        //        }
-        //    }
-        //for(int i=0; i<Vertices.Count;i++)
-        //{
-        //    Dictionary<Vertex, int> adjVertices = GetAdjacentVerticesWithLenght(usedVertices);
-        //    var closestVertex = adjVertices.Where(pair => pair.Value == adjVertices.Values.Min());
-
-        //    foreach(var kvp in closestVertex)
-        //    {
-        //        if (!shortPathes.ContainsKey(kvp.Key))
-        //        {
-        //            shortPathes.Add(kvp.Key, kvp.Value);
-        //        }
-        //        else
-        //        {
-        //            var pathToVertex = shortPathes[kvp.Key];
-        //            shortPathes[kvp.Key] = kvp.Value;
-        //        }
-        //    }
-
-
-        //}
-
-
-
-        //public void AlgorithmDixtra(Vertex from, Vertex to)
-        //{
-        //    Dictionary<Vertex, int> pathes = new Dictionary<Vertex, int>();
-        //    pathes.Add(from,0);
-        //    Vertex lastVertex;
-        //    Queue<Vertex> vQueue = new Queue<Vertex>();
-        //    vQueue = SearchQueue(from, vQueue);
-
-        //    Dictionary<Vertex,int> adjVertices = GetAdjacentVerticesWithLenght(from);
-
-
-        //    while(vQueue.Count !=0)
-        //    {
-        //        var subset = adjVertices.Where(pair => pair.Value == adjVertices.Values.Min()); // Получить самого близкого соседа
-        //        foreach (var kvp in subset)
-        //        {
-        //            var vertex = vQueue.Dequeue();
-        //            lastVertex = vertex;
-        //            if (!pathes.ContainsKey(kvp.Key))
-        //            {
-        //                pathes.Add(kvp.Key, kvp.Value);
-        //            }
-        //            else
-        //            {
-        //                var pathToVertex = pathes[kvp.Key];
-        //                pathes[kvp.Key] = kvp.Value;
-        //                Dictionary<Vertex, int> adjVertices = GetAdjacentVerticesWithLenght(from);
-        //            }
-        //        }
-        //    }
-        //}
-
-        //private bool isReturnToBack()
-        //{
-        //    if(path)
-        //    return true;
-        //}
+    
 
         public void DFS(Vertex from, Vertex to)
         {
