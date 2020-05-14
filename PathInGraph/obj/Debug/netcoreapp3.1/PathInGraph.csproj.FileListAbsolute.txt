@@ -1,0 +1,11 @@
+B:\Programming\sharp\PathInGraph\PathInGraph\bin\Debug\netcoreapp3.1\PathInGraph.exe
+B:\Programming\sharp\PathInGraph\PathInGraph\bin\Debug\netcoreapp3.1\PathInGraph.deps.json
+B:\Programming\sharp\PathInGraph\PathInGraph\bin\Debug\netcoreapp3.1\PathInGraph.runtimeconfig.json
+B:\Programming\sharp\PathInGraph\PathInGraph\bin\Debug\netcoreapp3.1\PathInGraph.runtimeconfig.dev.json
+B:\Programming\sharp\PathInGraph\PathInGraph\bin\Debug\netcoreapp3.1\PathInGraph.dll
+B:\Programming\sharp\PathInGraph\PathInGraph\bin\Debug\netcoreapp3.1\PathInGraph.pdb
+B:\Programming\sharp\PathInGraph\PathInGraph\obj\Debug\netcoreapp3.1\PathInGraph.csprojAssemblyReference.cache
+B:\Programming\sharp\PathInGraph\PathInGraph\obj\Debug\netcoreapp3.1\PathInGraph.AssemblyInfoInputs.cache
+B:\Programming\sharp\PathInGraph\PathInGraph\obj\Debug\netcoreapp3.1\PathInGraph.AssemblyInfo.cs
+B:\Programming\sharp\PathInGraph\PathInGraph\obj\Debug\netcoreapp3.1\PathInGraph.dll
+B:\Programming\sharp\PathInGraph\PathInGraph\obj\Debug\netcoreapp3.1\PathInGraph.pdb
